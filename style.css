@@ -2,7 +2,7 @@
 
 body {
     background-color: black;
-    font-size: 30px;
+    font-size: 60px;
     color: white;
     font-family: Handjet, sans-serif;
     margin: 10px;
@@ -15,7 +15,7 @@ h1 {
 }
 
 /* CSS */
-.button-27 {
+.pretty-button {
     appearance: none;
     background-color: #000000;
     border: 1px solid #ffffff;
@@ -41,16 +41,16 @@ h1 {
     will-change: transform;
 }
 
-.button-27:disabled {
+.pretty-button:disabled {
     pointer-events: none;
 }
 
-.button-27:hover {
-    box-shadow: rgba(255, 255, 255, 0.25) 0 8px 15px;
+.pretty-button:hover {
+    box-shadow: rgba(255, 255, 255, 0.23) 0 8px 15px;
     transform: translateY(-2px);
 }
 
-.button-27:active {
+.pretty-button:active {
     box-shadow: none;
     transform: translateY(0);
 }
@@ -62,12 +62,11 @@ button {
     font-family: Handjet, sans-serif;
     background-color: black;
     color: white;
-    font-size: 16px; /* Adjust the input and button font size */
     border: 1px solid #ffffff;
     border-radius: 4px;
     padding: 8px 12px; /* Adjust input padding */
-    height: 40px; /* Adjust input height */
     transition: border 0.15s ease;
+    min-height: 40px;
 }
 
 input[type="text"]:focus,
@@ -95,25 +94,25 @@ table, th, td {
 /* Media queries for responsive design */
 @media (min-width: 768px) {
     h2 {
-        font-size: 24px;
+        font-size: 60px;
     }
 
     input[type="text"],
     input[type="number"],
     button {
-        font-size: 18px;
+        font-size: 35px;
     }
 }
 
 /* Additional styles for smaller screens (e.g., mobile devices) */
 @media (max-width: 767px) {
     h2 {
-        font-size: 20px;
+        font-size: 50px;
     }
 
     input[type="text"],
     input[type="number"],
     button {
-        font-size: 16px;
+        font-size: 30px;
     }
 }
