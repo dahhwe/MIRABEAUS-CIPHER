@@ -10,20 +10,42 @@ function createAlphabetTable() {
     const tableWidth = parseInt(document.getElementById('tableWidth').value, 10);
     const tableHeight = parseInt(document.getElementById('tableHeight').value, 10);
 
-    if (isNaN(tableWidth) || isNaN(tableHeight) || tableWidth <= 0 || tableHeight <= 0) {
-        alert('Пожалуйста, введите корректные размеры таблицы.');
+    const totalSquares = tableWidth * tableHeight;
+
+    if (isNaN(tableWidth) || isNaN(tableHeight) || totalSquares < 33) {
+        alert('Размеры таблицы должны обеспечивать как минимум 33 ячейки.');
         return;
     }
 
     const alphabetTableContainer = document.getElementById('alphabetTableContainer');
     const alphabetTable = document.createElement('table');
 
+    const maxAlphabetLength = totalSquares;
+
+    // Создание заголовков с номерами столбцов
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<th></th>';
+    for (let i = 1; i <= tableWidth; i++) {
+        const columnHeader = document.createElement('th');
+        columnHeader.textContent = i;
+        headerRow.appendChild(columnHeader);
+    }
+    alphabetTable.appendChild(headerRow);
+
     for (let i = 0; i < tableHeight; i++) {
         const row = document.createElement('tr');
+        // Создание номера строки
+        const rowNumberCell = document.createElement('td');
+        rowNumberCell.textContent = i + 1;
+        rowNumberCell.className = 'row-number'; // Add a class for styling
+        row.appendChild(rowNumberCell);
+
         for (let j = 0; j < tableWidth; j++) {
             const cell = document.createElement('td');
             const charCode = 1040 + i * tableWidth + j;
-            cell.textContent = charCode <= 1071 ? String.fromCharCode(charCode) : ''; // Оставить пустые клетки, если алфавит больше русского
+            if (charCode <= 1071 && charCode - 1040 < maxAlphabetLength) {
+                cell.textContent = String.fromCharCode(charCode);
+            }
             row.appendChild(cell);
         }
         alphabetTable.appendChild(row);
@@ -32,7 +54,6 @@ function createAlphabetTable() {
     alphabetTableContainer.innerHTML = '';
     alphabetTableContainer.appendChild(alphabetTable);
 }
-
 
 function encryptString() {
     const inputString = document.getElementById('inputString').value;
