@@ -1,0 +1,43 @@
+body {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Стили для больших экранов (например, компьютеров) */
+@media (min-width: 768px) {
+    h2 {
+        font-size: 24px;
+    }
+
+    input[type="text"], input[type="number"], button {
+        font-size: 18px;
+    }
+}
+
+/* Стили для маленьких экранов (например, мобильных устройств) */
+@media (max-width: 767px) {
+    h2 {
+        font-size: 20px;
+    }
+
+    input[type="text"], input[type="number"], button {
+        font-size: 16px;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 400px; /* Ограничение ширины таблицы для мобильных экранов */
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 10px;
+}

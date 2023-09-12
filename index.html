@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифр Мирабо</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Шифр Мирабо</h1>
+
+<!-- Форма для ввода размерности алгоритма -->
+<h2>Введите размерность алфавитной таблицы:</h2>
+<label for="tableWidth"></label><input type="number" id="tableWidth" style="width: 50px;"> x
+<label for="tableHeight"></label><input type="number" id="tableHeight" style="width: 50px;">
+<button onclick="createAlphabetTable()">Создать таблицу</button>
+
+<!-- Таблица букв алфавита -->
+<div id="alphabetTableContainer"></div>
+
+<!-- Шифрование -->
+<h2>Шифрование</h2>
+<label for="inputString">Введите строку для шифрования:</label>
+<input type="text" id="inputString">
+<button onclick="encryptString()">Зашифровать</button>
+<p>Зашифрованный результат: <span id="encryptedResult"></span></p>
+
+<!-- Дешифрование -->
+<h2>Дешифрование</h2>
+<label for="encryptedInput">Введите зашифрованную строку для дешифрования:</label>
+<input type="text" id="encryptedInput">
+<button onclick="decryptString()">Дешифровать</button>
+<p>Дешифрованный результат: <span id="decryptedResult"></span></p>
+
+<script src="script.js"></script>
+</body>
+</html>
