@@ -12,8 +12,8 @@ function createAlphabetTable() {
 
     const totalSquares = tableWidth * tableHeight;
 
-    if (isNaN(tableWidth) || isNaN(tableHeight) || totalSquares < 33) {
-        alert('Размеры таблицы должны обеспечивать как минимум 33 ячейки.');
+    if (isNaN(tableWidth) || isNaN(tableHeight) || totalSquares < 32) {
+        alert('Размеры таблицы должны обеспечивать как минимум 32 ячейки.');
         return;
     }
 
@@ -68,18 +68,18 @@ function encryptString() {
     let encryptedText = '';
 
     for (const char of inputString.toUpperCase()) {
-        for (let i = 0; i < alphabetRows.length; i++) {
+        for (let i = 1; i < alphabetRows.length; i++) { // Start from 1 to skip the first row
             const cells = alphabetRows[i].querySelectorAll('td');
-            for (let j = 0; j < cells.length; j++) {
+            for (let j = 1; j < cells.length; j++) { // Start from 1 to skip the first column
                 if (cells[j].textContent === char) {
-                    encryptedText += `${i + 1}/${j + 1} + `;
+                    encryptedText += `${i}/${j} + `;
                 }
             }
         }
     }
 
     if (encryptedText) {
-        encryptedText = encryptedText.slice(0, -2); // Удаляем последние два символа
+        encryptedText = encryptedText.slice(0, -2); // Remove the trailing " + "
         document.getElementById('encryptedResult').textContent = encryptedText;
     } else {
         alert('Ошибка: Некоторые символы невозможно зашифровать. Пожалуйста, проверьте ввод.');
@@ -102,12 +102,12 @@ function decryptString() {
     for (const part of parts) {
         const [group, index] = part.split('/').map(Number);
 
-        if (!isNaN(group) && !isNaN(index) && group >= 1 && group <= alphabetRows.length && index >= 1) {
-            const row = alphabetRows[group - 1];
+        if (!isNaN(group) && !isNaN(index) && group >= 1 && group < alphabetRows.length && index >= 1) {
+            const row = alphabetRows[group];
             const cells = row.querySelectorAll('td');
 
-            if (index <= cells.length) {
-                decryptedText += cells[index - 1].textContent;
+            if (index < cells.length) {
+                decryptedText += cells[index].textContent;
             }
         }
     }
