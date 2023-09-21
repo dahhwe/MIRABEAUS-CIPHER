@@ -9,11 +9,20 @@
 <body>
 <h1>Шифр Мирабо</h1>
 
+<h2>Выберите язык алфавитной таблицы:</h2>
+<select id="languageSelection" onchange="createAlphabetTable()">
+    <option value="ru">Русский</option>
+    <option value="en">English</option>
+    <option value="es">Español</option>
+</select>
+
+
 <!-- Форма для ввода размерности алгоритма -->
 <h2>Введите размерность алфавитной таблицы (например 6х6):</h2>
-<label for="tableWidth"></label><input type="number" id="tableWidth" style="width: 50px;"> x
-<label for="tableHeight"></label><input type="number" id="tableHeight" style="width: 50px;">
+<label for="tableWidth"></label><input type="number" id="tableWidth" style="width: 50px;" value="6"> x
+<label for="tableHeight"></label><input type="number" id="tableHeight" style="width: 50px;" value="6">
 <button class=pretty-button onclick="createAlphabetTable()">Создать таблицу</button>
+
 
 <!-- Таблица букв алфавита -->
 <div id="alphabetTableContainer"></div>
@@ -24,6 +33,8 @@
 <input type="text" id="inputString">
 <button class=pretty-button onclick="encryptString()">Зашифровать</button>
 <p>Зашифрованный результат: <span id="encryptedResult"></span></p>
+<p id="unencryptedCharacters" style="color: white; font-weight: bold;"></p>
+
 
 <!-- Дешифрование -->
 <h2>Дешифрование</h2>
