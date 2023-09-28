@@ -2,6 +2,12 @@ window.onload = function () {
     createAlphabetTable();
 };
 
+// Add an event listener to the radio buttons to recreate the table when a radio button is checked
+document.querySelectorAll('input[name="tableDimensions"]').forEach(function (radio) {
+    radio.addEventListener('change', createAlphabetTable);
+});
+
+// Function to create the alphabet table
 function createAlphabetTable() {
     // Clear previous encryption/decryption results and input fields
     document.getElementById('encryptedResult').textContent = '';
@@ -9,56 +15,35 @@ function createAlphabetTable() {
     document.getElementById('inputString').value = '';
     document.getElementById('encryptedInput').value = '';
 
-    // Get table dimensions from user input
-    const tableWidth = parseInt(document.getElementById('tableWidth').value, 10);
-    const tableHeight = parseInt(document.getElementById('tableHeight').value, 10);
-    const totalSquares = tableWidth * tableHeight;
+    // Get table dimensions from the selected radio button
+    const tableWidth = parseInt(document.querySelector('input[name="tableDimensions"]:checked').value, 10);
 
-    // Validate table dimensions
-    if (isNaN(tableWidth) || isNaN(tableHeight)) {
-        alert('Введите корректные размеры таблицы');
-        return;
-    }
-
-    // Get language selection from user input
-    const language = document.getElementById('languageSelection').value;
-    let startCharCode;
-    let endCharCode;
+    // Get language selection from the combobox
+    const language = document.getElementById('languageSelection').value; // Correctly get the selected language
 
     // Set character code range based on language
+    let startCharCode;
+    let endCharCode;
     switch (language) {
         case 'ru':
-            startCharCode = 1040;
-            endCharCode = 1071; // 'Я' in Cyrillic
+            startCharCode = 1040; // 'А' in Cyrillic
+            endCharCode = 1071;   // 'Я' in Cyrillic
             break;
         case 'en':
             startCharCode = 65; // 'A' in English
-            endCharCode = 90; // 'Z' in English
+            endCharCode = 90;   // 'Z' in English
             break;
         case 'es':
             startCharCode = 65; // 'A' in Spanish
-            endCharCode = 90; // 'Z' in Spanish
+            endCharCode = 90;   // 'Z' in Spanish
             break;
     }
 
-    // Create an array of all possible characters
-    const allChars = [];
-    for (let i = startCharCode; i <= endCharCode; i++) {
-        allChars.push(String.fromCharCode(i));
-    }
-    allChars.push(' '); // Add space character
+    // Calculate the number of letters in the alphabet for the selected language
+    const numberOfLetters = endCharCode - startCharCode + 1;
 
-    // If the table is larger than the alphabet, fill the remaining cells with random Unicode characters
-    while (allChars.length < totalSquares) {
-        let randomChar = String.fromCharCode(Math.floor(Math.random() * (126 - 33) + 33));
-        // Ensure the random character is not already in the alphabet
-        if (!allChars.includes(randomChar)) {
-            allChars.push(randomChar);
-        }
-    }
-
-    // Randomize the array
-    allChars.sort(() => Math.random() - 0.5);
+    // Calculate the number of rows required to fit the alphabet in the specified number of columns
+    const tableHeight = Math.ceil((numberOfLetters + 1) / tableWidth); // Add 1 for the space character
 
     // Create alphabet table
     const alphabetTableContainer = document.getElementById('alphabetTableContainer');
@@ -74,7 +59,8 @@ function createAlphabetTable() {
     }
     alphabetTable.appendChild(headerRow);
 
-    // Create table rows
+    // Create table rows for the alphabet letters and space
+    let charCode = startCharCode;
     for (let i = 0; i < tableHeight; i++) {
         const row = document.createElement('tr');
 
@@ -84,10 +70,16 @@ function createAlphabetTable() {
         rowNumberCell.className = 'row-number'; // Add a class for styling
         row.appendChild(rowNumberCell);
 
-        // Create cells
+        // Create cells with alphabet characters and space
         for (let j = 0; j < tableWidth; j++) {
             const cell = document.createElement('td');
-            cell.textContent = allChars[i * tableWidth + j];
+            if (charCode <= endCharCode) {
+                cell.textContent = String.fromCharCode(charCode);
+                charCode++;
+            } else if (charCode === endCharCode + 1) {
+                cell.textContent = ' '; // Treat space as an alphabet letter
+                charCode++;
+            }
             row.appendChild(cell);
         }
 
