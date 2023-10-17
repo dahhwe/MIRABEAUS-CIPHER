@@ -1,55 +1,70 @@
-window.onload = function () {
-    createAlphabetTable();
-};
+document.getElementById('languageSelection').addEventListener('change', function () {
+    const language = this.value;
+    const selectElem = document.getElementById('tableDimensionsSelection');
+    let maxColumns;
 
-// Add an event listener to the radio buttons to recreate the table when a radio button is checked
-document.querySelectorAll('input[name="tableDimensions"]').forEach(function (radio) {
-    radio.addEventListener('change', createAlphabetTable);
+    switch (language) {
+        case 'ru':
+            maxColumns = 33;
+            break;
+        case 'en':
+            maxColumns = 27;
+            break;
+    }
+
+    selectElem.innerHTML = '';
+    for (let i = 1; i <= maxColumns; i++) {
+        const optionElem = document.createElement('option');
+        optionElem.value = i;
+        optionElem.textContent = i + (i === 1 ? " столбец" : " столбцов");
+        if (i === 5) {
+            optionElem.selected = true;  // Устанавливаем 5 столбцов по умолчанию
+        }
+        selectElem.appendChild(optionElem);
+    }
+
+    createAlphabetTable();
 });
 
-// Function to create the alphabet table
+window.onload = function () {
+    document.getElementById('languageSelection').dispatchEvent(new Event('change'));
+};
+
 function createAlphabetTable() {
-    // Clear previous encryption/decryption results and input fields
-    document.getElementById('encryptedResult').textContent = '';
-    document.getElementById('decryptedResult').textContent = '';
-    document.getElementById('inputString').value = '';
-    document.getElementById('encryptedInput').value = '';
+    const encryptedResultElem = document.getElementById('encryptedResult');
+    const decryptedResultElem = document.getElementById('decryptedResult');
+    const inputStringElem = document.getElementById('inputString');
+    const encryptedInputElem = document.getElementById('encryptedInput');
 
-    // Get table dimensions from the selected radio button
-    const tableWidth = parseInt(document.querySelector('input[name="tableDimensions"]:checked').value, 10);
 
-    // Get language selection from the combobox
-    const language = document.getElementById('languageSelection').value; // Correctly get the selected language
+    encryptedResultElem.textContent = '';
+    decryptedResultElem.textContent = '';
+    inputStringElem.value = '';
+    encryptedInputElem.value = '';
 
-    // Set character code range based on language
+    const tableWidth = parseInt(document.getElementById('tableDimensionsSelection').value, 10) || 5; // Если значение не выбрано, по умолчанию используется 5
+    const language = document.getElementById('languageSelection').value;
+
     let startCharCode;
     let endCharCode;
     switch (language) {
         case 'ru':
-            startCharCode = 1040; // 'А' in Cyrillic
-            endCharCode = 1071;   // 'Я' in Cyrillic
+            startCharCode = 1040;
+            endCharCode = 1071;
             break;
         case 'en':
-            startCharCode = 65; // 'A' in English
-            endCharCode = 90;   // 'Z' in English
-            break;
         case 'es':
-            startCharCode = 65; // 'A' in Spanish
-            endCharCode = 90;   // 'Z' in Spanish
+            startCharCode = 65;
+            endCharCode = 90;
             break;
     }
 
-    // Calculate the number of letters in the alphabet for the selected language
     const numberOfLetters = endCharCode - startCharCode + 1;
+    const tableHeight = Math.ceil((numberOfLetters + 1) / tableWidth);
 
-    // Calculate the number of rows required to fit the alphabet in the specified number of columns
-    const tableHeight = Math.ceil((numberOfLetters + 1) / tableWidth); // Add 1 for the space character
-
-    // Create alphabet table
     const alphabetTableContainer = document.getElementById('alphabetTableContainer');
     const alphabetTable = document.createElement('table');
 
-    // Create table headers
     const headerRow = document.createElement('tr');
     headerRow.innerHTML = '<th></th>';
     for (let i = 1; i <= tableWidth; i++) {
@@ -59,25 +74,21 @@ function createAlphabetTable() {
     }
     alphabetTable.appendChild(headerRow);
 
-    // Create table rows for the alphabet letters and space
     let charCode = startCharCode;
     for (let i = 0; i < tableHeight; i++) {
         const row = document.createElement('tr');
-
-        // Create row number
         const rowNumberCell = document.createElement('td');
         rowNumberCell.textContent = i + 1;
-        rowNumberCell.className = 'row-number'; // Add a class for styling
+        rowNumberCell.className = 'row-number';
         row.appendChild(rowNumberCell);
 
-        // Create cells with alphabet characters and space
         for (let j = 0; j < tableWidth; j++) {
             const cell = document.createElement('td');
             if (charCode <= endCharCode) {
                 cell.textContent = String.fromCharCode(charCode);
                 charCode++;
             } else if (charCode === endCharCode + 1) {
-                cell.textContent = ' '; // Treat space as an alphabet letter
+                cell.textContent = ' ';
                 charCode++;
             }
             row.appendChild(cell);
@@ -86,16 +97,14 @@ function createAlphabetTable() {
         alphabetTable.appendChild(row);
     }
 
-    // Append table to container
     alphabetTableContainer.innerHTML = '';
     alphabetTableContainer.appendChild(alphabetTable);
 }
 
-
 function encryptString() {
     const inputString = document.getElementById('inputString').value;
     const alphabetTable = document.querySelector('#alphabetTableContainer table');
-    const unencryptedElement = document.getElementById('unencryptedCharacters'); // Reference to the new <p> element
+    const unencryptedElement = document.getElementById('unencryptedCharacters');
 
     if (!alphabetTable) {
         alert('Пожалуйста, создайте таблицу алфавита.');
@@ -104,7 +113,7 @@ function encryptString() {
 
     const alphabetRows = alphabetTable.querySelectorAll('tr');
     let encryptedText = '';
-    const unencryptedCharacters = new Set(); // Use a Set to store unique unencrypted characters
+    const unencryptedCharacters = new Set();
 
     for (const char of inputString.toUpperCase()) {
         let charEncrypted = false;
@@ -112,32 +121,32 @@ function encryptString() {
             const cells = alphabetRows[i].querySelectorAll('td');
             for (let j = 1; j < cells.length; j++) {
                 if (cells[j].textContent === char) {
-                    encryptedText += `${i}${j}, `; // Add a space after the comma
+                    encryptedText += `${i}/${j}, `;
                     charEncrypted = true;
                     break;
                 }
             }
             if (charEncrypted) {
-                break; // Exit the loop if the character is encrypted
+                break;
             }
         }
         if (!charEncrypted) {
-            unencryptedCharacters.add(char); // Add unencrypted characters to the Set
+            unencryptedCharacters.add(char);
         }
     }
 
     if (encryptedText) {
-        encryptedText = encryptedText.slice(0, -2); // Remove the trailing comma and space
+        encryptedText = encryptedText.slice(0, -2);
         document.getElementById('encryptedResult').textContent = encryptedText;
     } else {
         alert('Ошибка: Некоторые символы невозможно зашифровать. Пожалуйста, проверьте ввод.');
     }
 
     if (unencryptedCharacters.size > 0) {
-        const unencryptedChars = Array.from(unencryptedCharacters).join(', '); // Create a comma-separated list of unencrypted characters
+        const unencryptedChars = Array.from(unencryptedCharacters).join(', ');
         unencryptedElement.textContent = `Не удалось зашифровать следующие символы: ${unencryptedChars}`;
     } else {
-        unencryptedElement.textContent = ''; // Clear the unencrypted characters if there are none
+        unencryptedElement.textContent = '';
     }
 }
 
@@ -155,8 +164,7 @@ function decryptString() {
     let decryptedText = '';
 
     for (const part of parts) {
-        const rowColumn = part.split('').map(Number);
-
+        const rowColumn = part.split('/').map(Number);
         if (rowColumn.length === 2) {
             const [row, column] = rowColumn;
             const rowElement = alphabetRows[row];

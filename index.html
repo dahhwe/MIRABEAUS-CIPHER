@@ -8,42 +8,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
-<h1>Шифр Мирабо</h1>
 
-<h2>Выберите язык алфавитной таблицы:</h2>
-<label for="languageSelection"></label><select id="languageSelection" onchange="createAlphabetTable()">
-    <option value="ru">Русский</option>
-    <option value="en">English</option>
-    <option value="es">Español</option>
-</select>
+<header>
+    <h1>Шифр Мирабо</h1>
+</header>
 
-<!-- Форма для ввода размерности алфавитной таблицы -->
-<h2>Выберите размерность алфавитной таблицы:</h2>
-<input type="radio" id="radio5Columns" name="tableDimensions" value="5" checked>
-<label for="radio5Columns">5 столбцов</label>
-<input type="radio" id="radio6Columns" name="tableDimensions" value="6">
-<label for="radio6Columns">6 столбцов</label>
+<section>
+    <h2>Выберите язык алфавитной таблицы:</h2>
+    <label for="languageSelection"></label>
+    <select id="languageSelection" aria-label="Выберите язык алфавитной таблицы" onchange="createAlphabetTable()">
+        <option value="ru">Русский</option>
+        <option value="en">English</option>
+    </select>
+</section>
 
+<section>
+    <h2>Выберите размерность алфавитной таблицы:</h2>
+    <select id="tableDimensionsSelection" onchange="createAlphabetTable()">
+        <option value="1">1 столбец</option>
+        <option value="2">2 столбцов</option>
+        <option value="3">3 столбцов</option>
+        <option value="4">4 столбцов</option>
+        <option value="5" selected>5 столбцов</option>
+        <!-- Остальные значения будут добавлены динамически через JavaScript -->
+    </select>
 
+</section>
 
-<!-- Таблица букв алфавита -->
-<div id="alphabetTableContainer"></div>
+<section>
+    <div id="alphabetTableContainer" aria-label="Таблица букв алфавита"></div>
+</section>
 
-<!-- Шифрование -->
-<h2>Шифрование</h2>
-<label for="inputString">Введите строку для шифрования:</label>
-<input type="text" id="inputString">
-<button class=pretty-button onclick="encryptString()">Зашифровать</button>
-<p>Зашифрованный результат: <span id="encryptedResult"></span></p>
+<section>
+    <h2>Шифрование</h2>
+    <label for="inputString">Введите строку для шифрования:</label>
+    <input type="text" id="inputString" aria-label="Строка для шифрования">
+    <button class="pretty-button" onclick="encryptString()">Зашифровать</button>
+    <p>Зашифрованный результат: <span id="encryptedResult"></span></p>
+</section>
 
-<!-- Дешифрование -->
-<h2>Дешифрование</h2>
-<label for="encryptedInput">Введите зашифрованную строку для дешифрования:</label>
-<input type="text" id="encryptedInput">
-<button class=pretty-button onclick="decryptString()">Дешифровать</button>
-<p>Дешифрованный результат: <span id="decryptedResult"></span></p>
+<section>
+    <h2>Дешифрование</h2>
+    <label for="encryptedInput">Введите зашифрованную строку для дешифрования:</label>
+    <input type="text" id="encryptedInput" aria-label="Зашифрованная строка для дешифрования">
+    <button class="pretty-button" onclick="decryptString()">Дешифровать</button>
+    <p>Дешифрованный результат: <span id="decryptedResult"></span></p>
+</section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
